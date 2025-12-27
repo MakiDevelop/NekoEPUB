@@ -13,6 +13,7 @@ struct EPubMetadata {
     let author: String
     let language: String
     let date: String
+    let isDoublePage: Bool  // 是否為雙頁掃描模式
 
     static var `default`: EPubMetadata {
         let dateFormatter = ISO8601DateFormatter()
@@ -21,15 +22,17 @@ struct EPubMetadata {
             title: "Photo Album",
             author: "NekoEPUB",
             language: "en",
-            date: dateFormatter.string(from: Date())
+            date: dateFormatter.string(from: Date()),
+            isDoublePage: false
         )
     }
 
-    init(identifier: String, title: String, author: String, language: String, date: String) {
+    init(identifier: String, title: String, author: String, language: String, date: String, isDoublePage: Bool = false) {
         self.identifier = identifier
         self.title = title
         self.author = author
         self.language = language
         self.date = date
+        self.isDoublePage = isDoublePage
     }
 }

@@ -78,7 +78,14 @@ final class EPubService {
             let progress = 0.3 + (Double(index) / Double(totalImages)) * 0.4
             progressHandler?(progress, "處理圖片 \(index + 1)/\(totalImages)...")
 
-            let imageFileName = "image\(String(format: "%03d", index + 1)).\(image.fileExtension)"
+            // 第一張圖片使用 "cover-image" 作為文件名
+            let imageFileName: String
+            if index == 0 {
+                imageFileName = "cover-image.\(image.fileExtension)"
+            } else {
+                imageFileName = "image\(String(format: "%03d", index + 1)).\(image.fileExtension)"
+            }
+
             let imageDestURL = imagesDir.appendingPathComponent(imageFileName)
 
             // Copy image
@@ -87,7 +94,8 @@ final class EPubService {
             // Generate XHTML page
             let pageXHTML = EPubStructure.imagePageXHTML(
                 imageFileName: imageFileName,
-                pageNumber: index + 1
+                pageNumber: index + 1,
+                isDoublePage: metadata.isDoublePage
             )
             let pageURL = textDir.appendingPathComponent("page\(String(format: "%03d", index + 1)).xhtml")
             try pageXHTML.write(to: pageURL, atomically: true, encoding: .utf8)

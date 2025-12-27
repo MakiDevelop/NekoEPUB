@@ -92,6 +92,39 @@ struct ImagesToEPubView: View {
                     .fill(Color.gray.opacity(0.1))
             )
 
+            // 雙頁掃描模式開關
+            Toggle(isOn: $viewModel.isDoublePage) {
+                HStack(spacing: 6) {
+                    Image(systemName: "rectangle.split.2x1")
+                    Text("雙頁掃描")
+                }
+                .font(.body.weight(.medium))
+            }
+            .toggleStyle(.switch)
+            .disabled(viewModel.state.isProcessing)
+
+            // 清除按鈕
+            if !viewModel.images.isEmpty {
+                Button {
+                    viewModel.clearAllImages()
+                } label: {
+                    HStack(spacing: 6) {
+                        Image(systemName: "trash")
+                        Text("清空")
+                    }
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(.red)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                }
+                .buttonStyle(.plain)
+                .background(
+                    Capsule()
+                        .fill(Color.red.opacity(0.1))
+                )
+                .disabled(viewModel.state.isProcessing)
+            }
+
             Spacer()
 
             Button {

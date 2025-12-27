@@ -24,6 +24,11 @@ struct MainTabView: View {
                 .tabItem {
                     Label("壓縮 ePub", systemImage: "archivebox")
                 }
+
+            BatchConversionView()
+                .tabItem {
+                    Label("批次轉檔", systemImage: "folder.fill.badge.gearshape")
+                }
         }
         .frame(minWidth: 800, minHeight: 600)
     }

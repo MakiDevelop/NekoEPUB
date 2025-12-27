@@ -13,6 +13,7 @@ import UniformTypeIdentifiers
 final class ImagesToEPubViewModel {
     var images: [ImageItem] = []
     var state: ProcessingState = .idle
+    var isDoublePage: Bool = false  // 是否為雙頁掃描模式
 
     private let epubService = EPubService.shared
 
@@ -60,7 +61,16 @@ final class ImagesToEPubViewModel {
         }
 
         do {
-            let metadata = EPubMetadata.default
+            // 使用文件名作為書名
+            let title = outputURL.deletingPathExtension().lastPathComponent
+            let metadata = EPubMetadata(
+                identifier: UUID().uuidString,
+                title: title,
+                author: "NekoEPUB",
+                language: "zh",
+                date: ISO8601DateFormatter().string(from: Date()),
+                isDoublePage: isDoublePage
+            )
 
             try await epubService.createEPub(
                 from: images,
@@ -84,5 +94,9 @@ final class ImagesToEPubViewModel {
 
     func reset() {
         state = .idle
+    }
+
+    func clearAllImages() {
+        images.removeAll()
     }
 }
